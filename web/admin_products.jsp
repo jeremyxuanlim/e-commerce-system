@@ -1,8 +1,10 @@
-<%-- /admin/admin_users.jsp --%>
+<%-- /admin/admin_products.jsp --%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="Model.Staff" %> <%-- Import Staff model --%>
-<%@ page import="Model.Customers" %> <%-- Import Customers model --%>
+<%@ page import="Model.Products" %> <%-- Import Products model --%>
 <%@ page import="java.util.List" %> <%-- Import List --%>
+<%@ page import="java.text.NumberFormat" %> <%-- For currency formatting --%>
+<%@ page import="java.util.Locale" %> <%-- For currency formatting --%>
 
 <%
     // --- Security Check: Redirect to login if not logged in ---
@@ -11,22 +13,25 @@
         response.sendRedirect(request.getContextPath() + "/login.jsp"); // Redirect to your login page
         return; // Stop processing the rest of the page
     }
-    // Optional: Add role-specific check here if needed
-    // if (!loggedInStaff.getIsManager()) { ... }
+    // Optional: Add role-specific check here if needed for product management
 
-    // --- TODO: Fetch user list data from backend ---
-    // Example: List<Customers> userList = customerDAO.getAllCustomers();
-    List<?> userList = List.of("User1", "User2"); // Placeholder - Replace with actual data list
+    // --- TODO: Fetch product list data from backend ---
+    // Example: List<Products> productList = productDAO.getAllProducts();
+    List<?> productList = List.of("Product1", "Product2"); // Placeholder - Replace with actual data list
+
+    // Currency Formatter (Example for Malaysia)
+    NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(new Locale("ms", "MY"));
+
 
     // Set active page for sidebar highlighting
-    request.setAttribute("activeAdminPage", "users");
+    request.setAttribute("activeAdminPage", "products");
 %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Management</title>
+    <title>Product Management</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/pages/body.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/components/navbar.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/components/footer.css">
@@ -41,38 +46,40 @@
         <jsp:include page="/WEB-INF/views/admin/admin_sidebar.jsp" />
 
         <div class="admin-content">
-            <h2><i class="fas fa-users-cog"></i> User Management</h2>
+            <h2><i class="fas fa-box-open"></i> Product Management</h2>
             <hr>
 
-            <a href="${pageContext.request.contextPath}/admin/users/add" class="btn-add"><i class="fas fa-plus"></i> Add User</a>
-            <%-- TODO: Create the corresponding add user page/servlet --%>
+            <a href="${pageContext.request.contextPath}/admin/products/add" class="btn-add"><i class="fas fa-plus"></i> Add Product</a>
+            <%-- TODO: Create the corresponding add product page/servlet --%>
 
             <div class="admin-table-container">
                 <table class="admin-table">
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Username</th>
-                            <th>Email</th>
-                            <th>Role</th> <%-- Assuming Customers might have a role or you join with Users table --%>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Stock</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <%-- === TODO: Replace placeholders with loop for actual userList === --%>
+                        <%-- === TODO: Replace placeholders with loop for actual productList === --%>
                         <%-- Example loop structure:
-                        <% if (userList == null || userList.isEmpty()) { %>
-                            <tr><td colspan="5">No users found.</td></tr>
+                        <% if (productList == null || productList.isEmpty()) { %>
+                            <tr><td colspan="6">No products found.</td></tr>
                         <% } else { %>
-                            <% for (Customers user : userList) { %>
+                            <% for (Products product : productList) { %>
                                 <tr>
-                                    <td><%= user.getId() %></td>
-                                    <td><%= user.getUsername() %></td>
-                                    <td><%= user.getEmail() %></td>
-                                    <td>Customer</td>  <%-- Determine role --%>
+                                    <td><%= product.getId() %></td>
+                                    <td><%= product.getName() %></td>
+                                    <td><%= product.getCategory() != null ? product.getCategory() : "N/A" %></td>
+                                    <td><%= currencyFormatter.format(product.getPrice()) %></td>
+                                    <td><%= product.getStock() %></td>
                                     <td>
-                                        <a href="${pageContext.request.contextPath}/admin/users/edit?id=<%= user.getId() %>" class="action-btn btn-edit"><i class="fas fa-edit"></i> Edit</a>
-                                        <a href="${pageContext.request.contextPath}/admin/users/delete?id=<%= user.getId() %>" class="action-btn btn-delete" onclick="return confirm('Are you sure you want to delete user <%= user.getUsername() %>?');"><i class="fas fa-trash"></i> Delete</a>
+                                        <a href="${pageContext.request.contextPath}/admin/products/edit?id=<%= product.getId() %>" class="action-btn btn-edit"><i class="fas fa-edit"></i> Edit</a>
+                                        <a href="${pageContext.request.contextPath}/admin/products/delete?id=<%= product.getId() %>" class="action-btn btn-delete" onclick="return confirm('Are you sure you want to delete product: <%= product.getName() %>?');"><i class="fas fa-trash"></i> Delete</a>
                                     </td>
                                 </tr>
                             <% } %>
@@ -82,19 +89,21 @@
                         <%-- Placeholder Rows (Remove when using loop) --%>
                         <tr>
                             <td>1</td>
-                            <td>customerREX</td>
-                            <td>customer1@example.com</td>
-                            <td>Customer</td>
+                            <td>IEM</td>
+                            <td>Audio</td>
+                            <td><%= currencyFormatter.format(1200.50) %></td>
+                            <td>50</td>
                             <td>
                                 <a href="#" class="action-btn btn-edit"><i class="fas fa-edit"></i> Edit</a>
                                 <a href="#" class="action-btn btn-delete" onclick="return confirm('Are you sure?');"><i class="fas fa-trash"></i> Delete</a>
                             </td>
                         </tr>
-                        <tr>
+                         <tr>
                             <td>2</td>
-                            <td>customer2</td>
-                            <td>customer2@example.com</td>
-                            <td>Customer</td>
+                            <td>Mouse</td>
+                            <td>Computer Accessories</td>
+                             <td><%= currencyFormatter.format(25.99) %></td>
+                            <td>100</td>
                             <td>
                                 <a href="#" class="action-btn btn-edit"><i class="fas fa-edit"></i> Edit</a>
                                 <a href="#" class="action-btn btn-delete" onclick="return confirm('Are you sure?');"><i class="fas fa-trash"></i> Delete</a>
@@ -112,4 +121,3 @@
 
 </body>
 </html>
-
