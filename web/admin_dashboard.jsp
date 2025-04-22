@@ -38,7 +38,7 @@
     --%>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary mb-4 shadow-sm"> <div class="container-fluid">
+    <nav class="navbar p-4 navbar-expand-lg bg-body-tertiary mb-4 shadow-sm"> <div class="container-fluid">
         <a class="navbar-brand" href="#">
             <i class="fas fa-shield-alt me-2"></i>Admin Panel
         </a>
@@ -62,7 +62,7 @@
         </div>
       </div>
     </nav>
-    <div class="container-fluid">
+    <div class="container-fluid px-5">
         <ul class="nav nav-tabs mb-3" id="adminTab" role="tablist">
             <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="dashboard-tab" data-bs-toggle="tab" data-bs-target="#dashboard-tab-pane" type="button" role="tab" aria-controls="dashboard-tab-pane" aria-selected="true">
