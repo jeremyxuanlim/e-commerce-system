@@ -7,11 +7,8 @@
     }
 
     // Check manager status (needed to conditionally show staff link)
-    // Staff loggedInStaff = (Staff) session.getAttribute("loggedInStaff");
-    boolean isManager = false; // Placeholder
-    // if (loggedInStaff != null) {
-    //     // isManager = loggedInStaff.getIsManager();
-    // }
+    Users currentUser = (Users) session.getAttribute("user");
+    boolean isManager = currentUser != null && "manager".equals(currentUser.getRole());
 %>
 <div class="sidebar mb-3">
     <h3 class="d-flex align-items-center gap-2"><i class="fas fa-tachometer-alt"></i> Menu</h3>
@@ -35,11 +32,14 @@
         <a class="nav-link <%= "reports".equals(activePage) ? "active" : "" %>" href="${pageContext.request.contextPath}/admin/admin_reports.jsp">
             <i class="fas fa-file-alt"></i> Reports
         </a>
-        <%-- Conditionally show Staff Management for Managers --%>
-        <%-- <% if (isManager) { %> --%>
+        <%
+            if (isManager) {
+        %>
             <a class="nav-link <%= "staff".equals(activePage) ? "active" : "" %>" href="${pageContext.request.contextPath}/admin/admin_staff.jsp">
                 <i class="fas fa-user-shield"></i> Staff
             </a>
-        <%-- <% } %> --%>
+        <%
+            }
+        %>
     </nav>
 </div>

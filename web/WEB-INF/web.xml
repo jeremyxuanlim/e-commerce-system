@@ -36,6 +36,34 @@
         <servlet-name>CartController</servlet-name>
         <servlet-class>Controller.CartController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AdminController</servlet-name>
+        <servlet-class>Controller.admin.AdminController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminProductController</servlet-name>
+        <servlet-class>Controller.admin.AdminProductController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminPromotionController</servlet-name>
+        <servlet-class>Controller.admin.AdminPromotionController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminStaffController</servlet-name>
+        <servlet-class>Controller.admin.AdminStaffController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminOrderController</servlet-name>
+        <servlet-class>Controller.admin.AdminOrderController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminUserController</servlet-name>
+        <servlet-class>Controller.admin.AdminUserController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminReportsController</servlet-name>
+        <servlet-class>Controller.admin.AdminReportsController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Register</servlet-name>
         <url-pattern>/register</url-pattern>
@@ -71,5 +99,33 @@
     <servlet-mapping>
         <servlet-name>CartController</servlet-name>
         <url-pattern>/cart</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminController</servlet-name>
+        <url-pattern>/admin/dashboard</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminProductController</servlet-name>
+        <url-pattern>/admin/products</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminPromotionController</servlet-name>
+        <url-pattern>/admin/promotions</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminStaffController</servlet-name>
+        <url-pattern>/admin/staff</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminOrderController</servlet-name>
+        <url-pattern>/admin/orders</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminUserController</servlet-name>
+        <url-pattern>/admin/users</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminReportsController</servlet-name>
+        <url-pattern>/admin/reports</url-pattern>
     </servlet-mapping>
 </web-app>
