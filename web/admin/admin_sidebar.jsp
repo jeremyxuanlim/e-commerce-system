@@ -1,6 +1,8 @@
 <%-- /admin/admin_sidebar.jsp --%>
+<%@ page import="Model.Users" %>
 <%
     // Get the active page name set by the including JSP
+    
     String activePage = (String) request.getAttribute("activeAdminPage");
     if (activePage == null) {
         activePage = "dashboard"; // Default if not set
