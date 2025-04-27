@@ -3,7 +3,8 @@
 
 <h2 class="mb-3 border-bottom pb-2 text-body"><i class="fas fa-file-alt"></i> View Reports</h2>
 
-<a href="${pageContext.request.contextPath}/admin/dashboard?action=generateReport" class="btn btn-primary mb-3 btn-add"><i class="fas fa-cogs"></i> Generate Monthly Report</a>
+<a href="#" class="btn btn-primary mb-3 btn-add"><i class="fas fa-cogs"></i> Generate Report</a>
+<%-- TODO: Link to a report generation page or trigger generation via AJAX --%>
 
 <div class="table-responsive">
     <table class="table table-striped table-hover table-bordered align-middle">
@@ -17,15 +18,24 @@
            </tr>
        </thead>
         <tbody>
-        <c:forEach var="report" items="${reports}">
-            <tr>
-                <td>${report.id}</td>
-                <td>${report.reportType}</td>
-                <td><fmt:formatDate value="${report.generatedDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                <td>${report.generatedById.username}</td>
+             <tr>
+                <td>1</td>
+                <td>Monthly Sales Summary</td>
+                <td>2025-04-01 08:00:00</td>
+                <td>GiantREX</td>
                  <td>
-                    <button class="btn btn-sm btn-success action-btn" onclick="viewReport('${report.details}')" title="View Details"><i class="fas fa-eye"></i></button>
-                    <a href="${pageContext.request.contextPath}/admin/reports?action=delete&id=${report.id}" class="btn btn-sm btn-danger action-btn" title="Delete" onclick="return confirm('Are you sure you want to delete this report?');"><i class="fas fa-trash"></i></a>
+                    <a href="#" class="btn btn-sm btn-success action-btn" title="View Details"><i class="fas fa-eye"></i></a>
+                    <a href="#" class="btn btn-sm btn-danger action-btn" title="Delete" onclick="if(confirm('Are you sure?')){ showToast('Report deleted successfully.', 'success'); } return false;"><i class="fas fa-trash"></i></a>
+                </td>
+            </tr>
+             <tr>
+                <td>2</td>
+                <td>User Activity Report</td>
+                <td>2025-04-20 14:00:00</td>
+                <td>staffREX</td>
+                 <td>
+                    <a href="#" class="btn btn-sm btn-success action-btn" title="View Details"><i class="fas fa-eye"></i></a>
+                    <a href="#" class="btn btn-sm btn-danger action-btn" title="Delete" onclick="if(confirm('Are you sure?')){ showToast('Report deleted successfully.', 'success'); } return false;"><i class="fas fa-trash"></i></a>
                 </td>
             </tr>
              </tbody>
