@@ -37,7 +37,6 @@ import javax.xml.bind.annotation.XmlTransient;
 	@NamedQuery(name = "Products.findByPrice", query = "SELECT p FROM Products p WHERE p.price = :price"),
 	@NamedQuery(name = "Products.findByStock", query = "SELECT p FROM Products p WHERE p.stock = :stock")})
 public class Products implements Serializable {
-
 	private static final long serialVersionUID = 1L;
 	@Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -79,6 +78,13 @@ public class Products implements Serializable {
 		this.price = price;
 		this.stock = stock;
 	}
+        
+        public Products(String name, String description, BigDecimal price, int stock) {
+            this.name = name;
+            this.description = description;
+            this.price = price;
+            this.stock = stock;
+        }
 
 	public Integer getId() {
 		return id;
