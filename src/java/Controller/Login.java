@@ -23,83 +23,89 @@ import jakarta.servlet.http.HttpSession;
  */
 public class Login extends HttpServlet {
 
-	@PersistenceContext
-	EntityManager em;
+    @PersistenceContext
+    EntityManager em;
 
-	/**
-	 * Handles the HTTP <code>POST</code> method.
-	 *
-	 * @param request  servlet request
-	 * @param response servlet response
-	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException      if an I/O error occurs
-	 */
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		String input = req.getParameter("username").trim();
-		String password = req.getParameter("password").trim();
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request  servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException      if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        String input = req.getParameter("username").trim();
+        String password = req.getParameter("password").trim();
 
-		req.setAttribute("username", input);
+        req.setAttribute("username", input);
 
-		Boolean hasErrors = false;
+        Boolean hasErrors = false;
 
-		if (input.isEmpty()) {
-			req.setAttribute("usernameError", "Username is required.");
-			hasErrors = true;
-		}
+        if (input.isEmpty()) {
+            req.setAttribute("usernameError", "Username is required.");
+            hasErrors = true;
+        }
 
-		if (password.isEmpty()) {
-			req.setAttribute("passwordError", "Password is required.");
-			hasErrors = true;
-		}
+        if (password.isEmpty()) {
+            req.setAttribute("passwordError", "Password is required.");
+            hasErrors = true;
+        }
 
-		if (hasErrors) {
-			req.getRequestDispatcher("/login.jsp").forward(req, res);
-			return;
-		}
+        if (hasErrors) {
+            req.getRequestDispatcher("/login.jsp").forward(req, res);
+            return;
+        }
 
-		try {
-			Users user = em.createQuery("SELECT u FROM Users u WHERE u.username = :input OR u.email = :input", Users.class)
-					.setParameter("input", input)
-					.getSingleResult();
+        try {
+            Users user = em.createQuery("SELECT u FROM Users u WHERE u.username = :input OR u.email = :input", Users.class)
+                    .setParameter("input", input)
+                    .getSingleResult();
 
-			String hashedPassword = hashPassword(password);
-			if (!user.getPassword().equals(hashedPassword)) {
-				req.setAttribute("usernameError", "Invalid username/email or password.");
-				req.setAttribute("passwordError", "Invalid username/email or password.");
-				hasErrors = true;
-			}
+            String hashedPassword = hashPassword(password);
+            if (!user.getPassword().equals(hashedPassword)) {
+                req.setAttribute("usernameError", "Invalid username/email or password.");
+                req.setAttribute("passwordError", "Invalid username/email or password.");
+                hasErrors = true;
+            }
 
-			if (!hasErrors) {
-				HttpSession session = req.getSession();
-				session.setAttribute("user", user);
-				session.setAttribute("loginSuccess", "true");
-				res.sendRedirect(req.getContextPath() + "/index.jsp");
-				return;
-			}
-		} catch (NoResultException e) {
-			req.setAttribute("usernameError", "Invalid username/email or password.");
-			req.setAttribute("passwordError", "Invalid username/email or password.");
-			hasErrors = true;
-		}
+            if (!hasErrors) {
+                HttpSession session = req.getSession();
+                session.setAttribute("user", user);
+                session.setAttribute("loginSuccess", "true"); 
+                
+                // Check role and redirect accordingly
+                if (user.getRole().equals("manager") || user.getRole().equals("staff")) {
+                    res.sendRedirect(req.getContextPath() + "/admin/admin_dashboard.jsp");
+                } else {
+                    res.sendRedirect(req.getContextPath() + "/index.jsp");
+                }
+                return; 
+            }
+        } catch (NoResultException e) {
+            req.setAttribute("usernameError", "Invalid username/email or password.");
+            req.setAttribute("passwordError", "Invalid username/email or password.");
+            hasErrors = true;
+        }
 
-		if (hasErrors) {
-			req.getRequestDispatcher("/login.jsp").forward(req, res);
-		}
-	}
+        if (hasErrors) {
+            req.getRequestDispatcher("/login.jsp").forward(req, res);
+        }
+    }
 
-	private String hashPassword(String password) throws ServletException {
-		try {
-			MessageDigest md = MessageDigest.getInstance("SHA-256");
-			byte[] hashedBytes = md.digest(password.getBytes());
+    private String hashPassword(String password) throws ServletException {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] hashedBytes = md.digest(password.getBytes());
 
-			StringBuilder sb = new StringBuilder();
-			for (byte b : hashedBytes) {
-				sb.append(String.format("%02x", b));
-			}
-			return sb.toString();
-		} catch (NoSuchAlgorithmException e) {
-			throw new ServletException("Error hashing password", e);
-		}
-	}
+            StringBuilder sb = new StringBuilder();
+            for (byte b : hashedBytes) {
+                sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new ServletException("Error hashing password", e);
+        }
+    }
 }
