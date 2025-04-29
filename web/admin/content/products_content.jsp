@@ -172,7 +172,7 @@
             //   4.  Display a success/error message to the user.
 
             // Example using fetch API (Modern approach):
-            fetch('/your_servlet_name', {  // Replace '/your_servlet_name'
+            fetch('/AddProducts', {  // Replace '/your_servlet_name'
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded', // Important for form data
